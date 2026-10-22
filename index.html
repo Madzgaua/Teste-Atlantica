@@ -65,16 +65,20 @@
 
   </model-viewer>
 
-  <!-- Script posicionado no final do body para garantir que o DOM já carregou -->
   <script>
     const modelViewer = document.querySelector('#animal-viewer');
+    let autoLaunchAttempted = false;
 
-    // Ao dar o primeiro toque em qualquer lugar da tela, ativa a Realidade Aumentada
-    window.addEventListener('click', () => {
-      if (modelViewer && modelViewer.canActivateAR) {
+    modelViewer.addEventListener('click', (event) => {
+      if (autoLaunchAttempted || event.target.closest('button[slot="ar-button"]')) {
+        return;
+      }
+
+      if (modelViewer.canActivateAR) {
+        autoLaunchAttempted = true;
         modelViewer.activateAR();
       }
-    }, { once: true });
+    });
   </script>
 
 </body>
